@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
 import {
-  Platform,
-  StyleSheet,
-  Animated
+  Animated,
 } from 'react-native';
 
 
@@ -224,27 +222,33 @@ export default class CardFlip extends Component<Props> {
     const scaling = {
       transform: [
         { scale: cardZoom }
-      ]
+      ],
     }
 
+    const horizontalOffset = 10;
+    const verticalOffset = 30;
+    const cardContainerStyles = {
+      overflow: 'visible',
+      flex: 1,
+      position:'absolute',
+      left: horizontalOffset,
+      right: horizontalOffset,
+      bottom: verticalOffset,
+      top: verticalOffset,
+    };
+    const wrapperStyles = {
+      width: (this.props.style && this.props.style.width || 0) + horizontalOffset * 2,
+      height: (this.props.style && this.props.style.height || 0) + verticalOffset * 2,
+    };
+
     return (
-      <Animated.View style={[this.props.style, scaling]}>
-        <Animated.View style={[styles.cardContainer, cardATransform]}>{sides[0]}</Animated.View>
-        <Animated.View style={[styles.cardContainer, cardBTransform]}>{sides[1]}</Animated.View>
+      <Animated.View style={[this.props.style, scaling, wrapperStyles]}>
+        <Animated.View style={[cardContainerStyles, cardATransform]}>{sides[0]}</Animated.View>
+        <Animated.View style={[cardContainerStyles, cardBTransform]}>{sides[1]}</Animated.View>
       </Animated.View>
     );
   }
 }
-const styles = StyleSheet.create({
-  cardContainer: {
-    flex: 1,
-    position:'absolute',
-    left:0,
-    right: 0,
-    bottom: 0,
-    top: 0,
-  },
-});
 
 CardFlip.defaultProps = {
   style: {},
